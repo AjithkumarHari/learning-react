@@ -24,7 +24,6 @@ const Login = () => {
         }
     }
 
-
     return (
         <div>
             <form action="" onSubmit={handleSubmit(onSubmit)} >

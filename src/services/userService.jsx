@@ -1,17 +1,8 @@
-import axios from 'axios';
-
-const apiBaseUrl = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+import api from '../api/apiService'
 
 export const getUsers = async () => {
     try {
-        const response = await apiBaseUrl.get('/users/allUsers');
-        return response.data;
+        return await api.get('/users/allUsers');
     } catch (error) {
         console.error('Error fetching users:', error);
         throw error;
@@ -20,8 +11,7 @@ export const getUsers = async () => {
 
 export const userLogin = async (userData) => {
     try {
-        const response = await apiBaseUrl.post('/auth/login', userData);
-        return response.data;
+        return await api.post('/auth/login', userData);
     } catch (error) {
         console.error('Error logging in:', error);
         throw error;
@@ -30,8 +20,7 @@ export const userLogin = async (userData) => {
 
 export const userRegister = async (userData) => {
     try {
-        const response = await apiBaseUrl.post('/auth/register', userData);
-        return response.data;
+        return await api.post('/auth/register', userData);
     } catch (error) {
         console.error('Error registering:', error);
         throw error;
