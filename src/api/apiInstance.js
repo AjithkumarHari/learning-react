@@ -13,7 +13,7 @@ apiBaseUrl.interceptors.request.use(
     (config) => {
         const token = useStore.getState().token;
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.authorization = `Bearer ${token}`;
         }
         return config;
     },
