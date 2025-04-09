@@ -7,13 +7,13 @@ import {
 } from "react-router-dom";
 import './index.css'
 import App from './App.jsx'
-import Login from './components/loginForm.jsx';
-import Home from './pages/home.jsx';
-import Service from './pages/service.jsx';
-import About from './pages/about.jsx';
-import Auth from './components/auth.jsx';
-import Register from './components/registerForm.jsx';
-import Profile from './pages/profile.jsx';
+import Login from './components/LoginForm.jsx';
+import Home from './pages/Home.jsx';
+import Service from './pages/Service.jsx';
+import About from './pages/About.jsx';
+import Auth from './layouts/AuthLayout.jsx';
+import Register from './components/RegisterForm.jsx';
+import Profile from './pages/Profile.jsx';
 
 const router = createBrowserRouter([
   {
