@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useStore } from '../store/authStore';
 
 const NavBar = () => {
@@ -13,10 +13,26 @@ const NavBar = () => {
             <div className="mx-2 flex justify-between items-center">
                 <div className=" text-xl font-bold">React Workout</div>
                 <ul className="flex space-x-4">
-                    <li><Link to="/home" className="text-white hover:text-gray-300">Home</Link></li>
-                    <li><Link to={isLoggedIn ? "/service" : "/login"} className="text-white hover:text-gray-300">Services</Link></li>
-                    <li><Link to={isLoggedIn ? "/about" : "/login"} className="text-white hover:text-gray-300">About</Link></li>
-                    <li><Link to="/" className="text-white hover:text-gray-300">Contact</Link></li>
+                    <li>
+                        <NavLink to="/home" className={({ isActive }) =>
+                            isActive ? 'text-[#a663cc] font-bold antialiased ' : 'text-white hover:text-gray-300'
+                        }>Home</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={isLoggedIn ? "/service" : "/auth/login"} className={({ isActive }) =>
+                            isActive ? 'text-[#a663cc] font-bold' : 'text-white hover:text-gray-300'
+                        }>Services</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={isLoggedIn ? "/about" : "/auth/login"} className={({ isActive }) =>
+                            isActive ? 'text-[#a663cc] font-bold' : 'text-white hover:text-gray-300'
+                        }>About</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={isLoggedIn ? "/profile" : "/auth/login"} className={({ isActive }) =>
+                            isActive ? 'text-[#a663cc] font-bold' : 'text-white hover:text-gray-300'
+                        }>Profile</NavLink>
+                    </li>
                 </ul>
                 {isLoggedIn ? (
                     <Link to="/home">

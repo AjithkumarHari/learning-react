@@ -7,12 +7,13 @@ import {
 } from "react-router-dom";
 import './index.css'
 import App from './App.jsx'
-import Login from './components/login.jsx';
-import Home from './components/home.jsx';
-import Service from './components/service.jsx';
-import About from './components/about.jsx';
+import Login from './components/loginForm.jsx';
+import Home from './pages/home.jsx';
+import Service from './pages/service.jsx';
+import About from './pages/about.jsx';
 import Auth from './components/auth.jsx';
-import Register from './components/register.jsx';
+import Register from './components/registerForm.jsx';
+import Profile from './pages/profile.jsx';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />
+      },
+      {
+        path: "/profile",
+        element: <Profile />
       }
     ]
   },
