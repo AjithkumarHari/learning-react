@@ -10,10 +10,10 @@ import App from './App.jsx'
 import Login from './components/LoginForm.jsx';
 import Home from './pages/Home.jsx';
 import Service from './pages/Service.jsx';
-import About from './pages/About.jsx';
 import Auth from './layouts/AuthLayout.jsx';
 import Register from './components/RegisterForm.jsx';
-import Profile from './pages/Profile.jsx';
+import Profile from './pages/profile.jsx';
+import MemberList from './pages/MemberList.jsx';
 
 const router = createBrowserRouter([
   {
@@ -34,12 +34,12 @@ const router = createBrowserRouter([
         element: <Service />,
       },
       {
-        path: "/about",
-        element: <About />
-      },
-      {
         path: "/profile",
         element: <Profile />
+      },
+      {
+        path: "/memberlist",
+        element: <MemberList />
       }
     ]
   },

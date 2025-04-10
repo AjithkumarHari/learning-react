@@ -26,3 +26,12 @@ export const userRegister = async (userData) => {
         throw error;
     }
 }
+
+export const userUpdate = async (userId, userData) => {
+    try {
+        return await api.put(`/users/update/${userId}`, userData);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
+    }
+}

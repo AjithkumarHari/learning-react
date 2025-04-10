@@ -24,11 +24,6 @@ const NavBar = () => {
                         }>Services</NavLink>
                     </li>
                     <li>
-                        <NavLink to={isLoggedIn ? "/about" : "/auth/login"} className={({ isActive }) =>
-                            isActive ? 'text-[#a663cc] font-bold' : 'text-white hover:text-gray-300'
-                        }>About</NavLink>
-                    </li>
-                    <li>
                         <NavLink to={isLoggedIn ? "/profile" : "/auth/login"} className={({ isActive }) =>
                             isActive ? 'text-[#a663cc] font-bold' : 'text-white hover:text-gray-300'
                         }>Profile</NavLink>
