@@ -34,7 +34,6 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
 
   const onSubmit = async data => {
     try {
-      console.log('Form data:', data);
       if (changePassword && data.newPassword !== data.confPassword) {
         setNotMatch(true);
         return;
@@ -44,7 +43,6 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
         name: data.name,
         password: data.newPassword,
       }
-
       const response = await userUpdate(userId, updatedData);
       setUser(response.user);
       onClose();
