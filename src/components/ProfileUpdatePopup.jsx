@@ -3,13 +3,20 @@ import { useForm } from 'react-hook-form';
 import closeIcon from '../assets/close-icon.png';
 import { userUpdate } from '../services/userService';
 import { useStore } from '../store/authStore';
+import { convertToBase64 } from '../utils/convertToBase64 ';
+import { useLoader } from '../context/LoaderContext';
+import { toast } from 'react-toastify';
 
 const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
   const [visible, setVisible] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [notMatch, setNotMatch] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const { setUser } = useStore((state) => state);
+
+  const { showLoader, hideLoader } = useLoader();
 
   const { register, watch, handleSubmit, reset, formState: { errors } } = useForm({
     defaultValues: {
@@ -20,6 +27,7 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
   const isPasswordChangeChecked = watch('changePassword', false);
 
   useEffect(() => {
+    console.log('useerData', userData);
     if (isOpen) {
       setVisible(true);
       setTimeout(() => setAnimate(true), 10);
@@ -27,8 +35,13 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
       setAnimate(false);
       setTimeout(() => setVisible(false), 300);
     }
-    reset();
-  }, [isOpen]);
+    if (userData) {
+      reset({
+        name: userData.name,
+      });
+    }
+    setPreviewUrl(userData.profileImage || 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHxwcm9maWxlfGVufDB8MHx8fDE3MTEwMDM0MjN8MA&ixlib=rb-4.0.3&q=80&w=1080');
+  }, [isOpen, userData]);
 
   if (!visible) return null;
 
@@ -40,16 +53,36 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
       }
       const userId = userData.id
       const updatedData = {
-        name: data.name,
-        password: data.newPassword,
+        name: data?.name,
       }
+
+      if (data?.newPassword) {
+        updatedData.password = data.newPassword;
+      }
+
+      if (imageFile) {
+        updatedData.profileImage = await convertToBase64(imageFile);
+      }
+      showLoader();
       const response = await userUpdate(userId, updatedData);
+      toast.success(response.message);
+      hideLoader();
       setUser(response.user);
       onClose();
     } catch (error) {
-      console.error('Error logging in:', error);
+      hideLoader();
+      toast.error(error.response.data.message);
     }
   }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const imageURL = URL.createObjectURL(file);
+      setPreviewUrl(imageURL);
+    }
+  };
 
 
   return (
@@ -59,14 +92,15 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
       >
         <div className='flex justify-between items-center mb-4'>
           <h2 className="text-xl font-bold">Update Profile</h2>
-          <img src={closeIcon} className='h-[20px]' alt="close" onClick={onClose} />
+          <img src={closeIcon} className='h-[20px] cursor-pointer' alt="close" onClick={onClose} />
         </div>
         <div className="flex justify-center  w-full gap-5">
-          <div class="mx-auto flex justify-center w-[141px] h-[141px] bg-blue-300/20 rounded-full bg-[url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHxwcm9maWxlfGVufDB8MHx8fDE3MTEwMDM0MjN8MA&ixlib=rb-4.0.3&q=80&w=1080')] bg-cover bg-center bg-no-repeat">
+          <div className="mx-auto relative justify-center w-[141px] h-[141px] bg-blue-300/20 rounded-full bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${previewUrl})` }}>
             <div class="bg-white/90 rounded-full w-6 h-6 text-center ml-28 mt-4">
-              <input type="file" name="profile" id="upload_profile" hidden required />
+              <input type="file" name="profile" id="upload_profile" hidden required onChange={handleImageChange} />
               <label for="upload_profile">
-                <svg data-slot="icon" class="w-6 h-5 text-blue-700" fill="none"
+                <svg data-slot="icon" class="w-6 h-5 text-blue-700 cursor-pointer" fill="none"
                   stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -104,7 +138,7 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
                       value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/,
                       message: "Must include a letter, number, and special character",
                     },
-                  })} type="password" maxLength={9} id="newPassword" class="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                  })} type="password" disabled={!isPasswordChangeChecked} maxLength={9} id="newPassword" class="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
                   <label for="newPassword" class="origin-[0] peer-placeholder-shown:top-1/3 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600 absolute left-1 top-2 z-10 -translate-y-4 scale-75 transform cursor-text select-none bg-white px-2 text-sm text-gray-500 duration-300"> Enter New Password</label>
                   {errors.newPassword && <span className="absolute bottom-0 left-0 text-red-500 text-xs pl-3">{errors.newPassword.message}</span>}
                 </div>
@@ -118,7 +152,7 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
                       message: "Must include a letter, number, and special character",
                     },
                     onChange: () => setNotMatch(false),
-                  })} type="password" maxLength={9} id="confPassword" class="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
+                  })} type="password" disabled={!isPasswordChangeChecked} maxLength={9} id="confPassword" class="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pt-4 pb-2.5 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0" placeholder=" " />
                   <label for="confPassword" class="origin-[0] peer-placeholder-shown:top-1/3 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600 absolute left-1 top-2 z-10 -translate-y-4 scale-75 transform cursor-text select-none bg-white px-2 text-sm text-gray-500 duration-300"> Confirm New Password</label>
                   {errors.confPassword && <span className="absolute bottom-0 left-0 text-red-500 text-xs pl-3">{errors.confPassword.message}</span>}
                   {notMatch && <span className="absolute bottom-0 left-0 text-red-500 text-xs pl-3 mt-5">Passwords do not match</span>}

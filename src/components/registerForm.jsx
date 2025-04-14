@@ -3,23 +3,32 @@ import { useStore } from '../store/authStore';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { userRegister } from '../services/userService';
+import { useLoader } from '../context/LoaderContext';
+import { toast } from 'react-toastify';
 
 const Register = () => {
 
+    const { showLoader, hideLoader } = useLoader();
+
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const {setIsLoggedIn, setUser, setToken} = useStore((state) => state);
+    const { setIsLoggedIn, setUser, setToken } = useStore((state) => state);
 
     const navigate = useNavigate();
 
     const onSubmit = async data => {
         try {
+            showLoader();
             const response = await userRegister(data);
+            toast.success(response.message);
+            hideLoader();
             setIsLoggedIn(true);
             setUser(response.user);
             setToken(response.token);
             navigate('/home');
         } catch (error) {
+            hideLoader();
+            toast.error(error.response.data.message);
             console.error('Error logging in:', error);
         }
     }

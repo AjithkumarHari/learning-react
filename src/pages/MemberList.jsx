@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { getUsers } from '../services/userService';
+import { useLoader } from '../context/LoaderContext';
 
 const MemberList = () => {
 
     const [members, setMembers] = useState([]);
+    const { showLoader, hideLoader } = useLoader();
 
     const getAllUsersData = async () => {
         try {
+            showLoader();
             const users = await getUsers();
+            hideLoader();
             setMembers(users);
         } catch (error) {
+            hideLoader();
             console.log(error);
         }
     }
@@ -27,7 +32,7 @@ const MemberList = () => {
                     members.map((member) => (
                         <div class="flex flex-row rounded-xl border border-gray-200/80 bg-white p-4 m-4 shadow-md hover:scale-105 transition-transform duration-300">
                             <div class="relative">
-                                <img class="w-20 h-20 rounded-full object-cover" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ" alt="User" />
+                                <img class="w-20 h-20 rounded-full object-cover" src={member.profileImage ? member.profileImage : 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ'} alt="User" />
                                 <div
                                     class="absolute -right-3 bottom-5 h-5 w-5 sm:top-2 rounded-full border-4 border-white bg-green-400 sm:invisible md:visible"
                                     title="User is online">
