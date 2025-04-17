@@ -15,5 +15,4 @@ export const LoaderProvider = ({ children }) => {
     );
 };
 
-
 export const useLoader = () => useContext(LoaderContext);

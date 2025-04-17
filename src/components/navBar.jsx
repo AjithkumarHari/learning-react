@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link, NavLink } from "react-router-dom";
 import { useStore } from '../store/authStore';
+import PrimaryButton from './form_elements/PrimaryButton';
+import logoutIcon from '../assets/logout-icon.png';
+import loginIcon from '../assets/login-icon.png';
 
 const NavBar = () => {
 
@@ -15,7 +18,7 @@ const NavBar = () => {
                 <ul className="flex space-x-4">
                     <li>
                         <NavLink to="/home" className={({ isActive }) =>
-                            isActive ? 'text-[#a663cc] font-bold antialiased ' : 'text-white hover:text-gray-300'
+                            isActive ? 'text-[#a663cc] font-bold antialiased' : 'text-white hover:text-gray-300'
                         }>Home</NavLink>
                     </li>
                     <li>
@@ -31,11 +34,11 @@ const NavBar = () => {
                 </ul>
                 {isLoggedIn ? (
                     <Link to="/home">
-                        <button onClick={setLogout}> Logout</button>
+                        <PrimaryButton label="Logout" width='105px' onClick={setLogout} sufixImage={logoutIcon}/>
                     </Link>
                 ) : (
                     <Link to="/auth/login">
-                        <button> Login</button>
+                        <PrimaryButton label="Login" width='105px' onClick={setLogout} prefilxImage={loginIcon}/>
                     </Link>
                 )}
             </div>

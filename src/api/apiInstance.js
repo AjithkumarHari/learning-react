@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useStore } from '../store/authStore';
+import { toast } from 'react-toastify';
 
 const apiBaseUrl = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -18,6 +19,16 @@ apiBaseUrl.interceptors.request.use(
         return config;
     },
     (error) => Promise.reject(error)
+);
+
+apiBaseUrl.interceptors.response.use(
+    (response) => {
+        toast.success(response.message);
+        return response.data;
+    },
+    (error) => {
+        toast.error(error.response.data.message || 'Something went wrong!');
+    }
 );
 
 export default apiBaseUrl;

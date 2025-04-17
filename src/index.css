@@ -32,7 +32,7 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+.primary-button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.4em 1.2em;
@@ -42,13 +42,78 @@ button {
   background-color: #a663cc;
   cursor: pointer;
   transition: border-color 0.25s;
+  color: #e0e1dd;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-button:hover {
+.primary-button:hover {
   border-color: #e0e1dd;
 }
-button:focus,
-button:focus-visible {
+.primary-button:focus,
+.primary-button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.input-error {
+  border: 1px solid red;
+  outline: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  padding: 1rem 0.625rem 0.625rem;
+  font-size: 0.875rem;
+  width: 100%;
+  appearance: none;
+  color: #111827;
+}
+
+.input-normal {
+  border: 1px solid #D1D5DB;
+  outline: none;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  padding: 1rem 0.625rem 0.625rem;
+  font-size: 0.875rem;
+  width: 100%;
+  appearance: none;
+  color: #111827;
+}
+
+.input-normal:focus {
+  border-color: #2563EB;
+  outline: none;
+  box-shadow: none;
+}
+
+.floating-label {
+  position: absolute;
+  left: 0.25rem;
+  top: 0.5rem;
+  z-index: 10;
+  transform: translateY(-1rem) scale(0.75);
+  transform-origin: 0;
+  cursor: text;
+  user-select: none;
+  background-color: white;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  transition: all 0.3s ease;
+}
+
+input:placeholder-shown + .floating-label {
+  top: 33%;
+  transform: translateY(-50%) scale(1);
+}
+
+input:focus + .floating-label {
+  top: 0.5rem;
+  transform: translateY(-1rem) scale(0.75);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: #2563eb;
 }
 
 @media (prefers-color-scheme: light) {

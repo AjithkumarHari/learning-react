@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStore } from '../store/authStore';
 import editIcon from '../assets/edit-icon.png'
 import ProfileUpdatePopup from '../components/ProfileUpdatePopup';
+import PrimaryButton from '../components/form_elements/PrimaryButton';
 
 const Profile = () => {
 
@@ -22,11 +23,8 @@ const Profile = () => {
                     <h2 class="font-semibold">{user.name}</h2>
                     <p class="text-gray-500">{user.email}</p>
                 </div>
-                <div class="p-4 border-t-2 border-gray-400 mx-8 mt-2">
-                    <button class=" block mx-auto rounded-full bg-gray-900 hover:shadow-lg font-semibold text-white px-6 py-2 flex justify-center items-center gap-3"
-                        onClick={() => setIsPopupOpen(true)}>
-                        <img className='h-[15px]' src={editIcon} alt="" />Edit Profile
-                    </button>
+                <div class="p-4 border-t-2 border-gray-400 flex justify-center items-center mx-5 mt-5">
+                    <PrimaryButton label="Change Password" sufixImage={editIcon} onClick={() => setIsPopupOpen(true) } />
                 </div>
             </div>
             <div className="p-10">

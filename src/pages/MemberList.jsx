@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUsers } from '../services/userService';
 import { useLoader } from '../context/LoaderContext';
+import { toast } from 'react-toastify';
 
 const MemberList = () => {
 
@@ -15,7 +16,7 @@ const MemberList = () => {
             setMembers(users);
         } catch (error) {
             hideLoader();
-            console.log(error);
+            toast.error(error?.response?.data?.message);
         }
     }
 

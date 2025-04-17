@@ -13,7 +13,7 @@ function App() {
         <ToastContainer
           position="bottom-center"
           autoClose={3000}
-          hideProgressBar={false}
+          hideProgressBar={true}
           newestOnTop
           closeOnClick
           pauseOnFocusLoss
