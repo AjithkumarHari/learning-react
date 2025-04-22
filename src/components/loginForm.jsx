@@ -23,10 +23,14 @@ const Login = () => {
             showLoader();
             const response = await userLogin(data);
             hideLoader();
-            setUser(response.user);
-            setIsLoggedIn(true);
-            setToken(response.token);
-            navigate('/home');
+            if (response.otpSent) {
+                navigate('/auth/otp', { state: { email: data.email } });
+            } else {
+                setUser(response.user);
+                setIsLoggedIn(true);
+                setToken(response.token);
+                navigate('/home');
+            }
         } catch (error) {
             hideLoader();
         }

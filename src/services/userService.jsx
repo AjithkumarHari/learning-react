@@ -31,3 +31,19 @@ export const userUpdate = async (userId, userData) => {
         throw error;
     }
 }
+
+export const verifyOTP = async (otp, email) => {
+    try {
+        return await api.post('/auth/verify-otp', { otp, email });
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const resendOTP = async (email) => {
+    try {
+        return await api.post('/auth/resend-otp', { email });
+    } catch (error) {
+        throw error;
+    }
+}

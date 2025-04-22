@@ -1,5 +1,4 @@
 import React from 'react';
-import { useStore } from '../store/authStore';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { userRegister } from '../services/userService';
@@ -14,21 +13,17 @@ const Register = () => {
 
     const { handleSubmit } = methods;
 
-    const { setIsLoggedIn, setUser, setToken } = useStore((state) => state);
-
     const navigate = useNavigate();
 
     const onSubmit = async data => {
         try {
             showLoader();
             const response = await userRegister(data);
+            navigate('/auth/otp', { state: { email: data.email } });
             hideLoader();
-            setUser(response.user);
-            setIsLoggedIn(true);
-            setToken(response.token);
-            navigate('/home');
         } catch (error) {
             hideLoader();
+            console.log(error);
         }
     }
 

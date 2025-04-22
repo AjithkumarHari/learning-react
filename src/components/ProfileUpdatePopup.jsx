@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import closeIcon from "../assets/close-icon.png";
 import { userUpdate } from "../services/userService";
 import { useStore } from "../store/authStore";
 import { convertToBase64 } from "../utils/convertToBase64 ";
+import closeIcon from "../assets/close-icon.png";
 import InputField from "./form_elements/InputField";
 import PrimaryButton from "./form_elements/PrimaryButton";
+import { useLoader } from "../context/LoaderContext";
 
 const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
     const [visible, setVisible] = useState(false);
@@ -15,6 +16,8 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const { setUser } = useStore((state) => state);
+
+    const { showLoader, hideLoader } = useLoader();
 
     const methods = useForm({
         defaultValues: {
@@ -62,10 +65,14 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
             if (imageFile) {
                 updatedData.profileImage = await convertToBase64(imageFile);
             }
+            showLoader();
             const response = await userUpdate(userId, updatedData);
+            hideLoader();
             setUser(response.user);
             onClose();
-        } catch (error) { }
+        } catch (error) { 
+            hideLoader();
+        }
     };
 
     const handleImageChange = (e) => {

@@ -15,6 +15,7 @@ import Register from './components/RegisterForm.jsx';
 import Profile from './pages/profile.jsx';
 import MemberList from './pages/MemberList.jsx';
 import { LoaderProvider } from './context/LoaderContext.jsx';
+import OtpForm from './components/OtpForm.jsx';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         path: "signup",
         element: <Register />,
       },
+      {
+        path: "otp",
+        element: <OtpForm />
+      }
     ]
   },
 
