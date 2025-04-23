@@ -7,7 +7,7 @@ import loginIcon from '../assets/login-icon.png';
 
 const NavBar = () => {
 
-    const isLoggedIn = useStore((state) => state.isLoggedIn);
+    const user = useStore((state) => state.user);
 
     const setLogout = useStore((state) => state.setLogout);
 
@@ -22,17 +22,17 @@ const NavBar = () => {
                         }>Home</NavLink>
                     </li>
                     <li>
-                        <NavLink to={isLoggedIn ? "/service" : "/auth/login"} className={({ isActive }) =>
+                        <NavLink to={user ? "/service" : "/auth/login"} className={({ isActive }) =>
                             isActive ? 'text-[#a663cc] font-bold' : 'text-white hover:text-gray-300'
                         }>Services</NavLink>
                     </li>
                     <li>
-                        <NavLink to={isLoggedIn ? "/profile" : "/auth/login"} className={({ isActive }) =>
+                        <NavLink to={user ? "/profile" : "/auth/login"} className={({ isActive }) =>
                             isActive ? 'text-[#a663cc] font-bold' : 'text-white hover:text-gray-300'
                         }>Profile</NavLink>
                     </li>
                 </ul>
-                {isLoggedIn ? (
+                {user ? (
                     <Link to="/home">
                         <PrimaryButton label="Logout" width='105px' onClick={setLogout} sufixImage={logoutIcon}/>
                     </Link>

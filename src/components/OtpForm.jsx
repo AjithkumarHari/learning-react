@@ -6,10 +6,11 @@ import { useStore } from '../store/authStore';
 
 const OTPInput = () => {
     const inputsRef = useRef([]);
+    const intervalRef = useRef(null);
 
     const { showLoader, hideLoader } = useLoader();
 
-    const { setIsLoggedIn, setUser, setToken } = useStore((state) => state);
+    const { setUser, setToken } = useStore((state) => state);
 
     const navigate = useNavigate();
 
@@ -67,10 +68,11 @@ const OTPInput = () => {
         try {
             showLoader();
             const response = await verifyOTP(otp, email);
-            setUser(response.user);
-            setIsLoggedIn(true);
-            setToken(response.token);
-            navigate('/home');
+            if (response) {
+                setUser(response.user);
+                setToken(response.token);
+                navigate('/home');
+            }
             hideLoader();
         } catch (error) {
             hideLoader();

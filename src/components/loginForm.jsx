@@ -14,7 +14,7 @@ const Login = () => {
 
     const { handleSubmit } = methods;
 
-    const { setIsLoggedIn, setUser, setToken } = useStore((state) => state);
+    const { setUser, setToken } = useStore((state) => state);
 
     const navigate = useNavigate();
 
@@ -22,15 +22,14 @@ const Login = () => {
         try {
             showLoader();
             const response = await userLogin(data);
-            hideLoader();
             if (response.otpSent) {
                 navigate('/auth/otp', { state: { email: data.email } });
             } else {
                 setUser(response.user);
-                setIsLoggedIn(true);
                 setToken(response.token);
                 navigate('/home');
             }
+            hideLoader();
         } catch (error) {
             hideLoader();
         }

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 const apiBaseUrl = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
-    timeout: 10000,
+    timeout: 50000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -23,10 +23,12 @@ apiBaseUrl.interceptors.request.use(
 
 apiBaseUrl.interceptors.response.use(
     (response) => {
-        toast.success(response.message);
+        console.log('Response from interceptor:', response);
+        toast.success(response.data.message);
         return response.data;
     },
     (error) => {
+        console.error('Error from interceptor:', error);
         toast.error(error.response.data.message || 'Something went wrong!');
     }
 );

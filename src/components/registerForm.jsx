@@ -19,11 +19,10 @@ const Register = () => {
         try {
             showLoader();
             const response = await userRegister(data);
-            navigate('/auth/otp', { state: { email: data.email } });
+            if (response) navigate('/auth/otp', { state: { email: data.email } });
             hideLoader();
         } catch (error) {
             hideLoader();
-            console.log(error);
         }
     }
 
