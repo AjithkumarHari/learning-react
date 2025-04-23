@@ -24,7 +24,7 @@ const Profile = () => {
                     <p class="text-gray-500">{user.email}</p>
                 </div>
                 <div class="p-4 border-t-2 border-gray-400 flex justify-center items-center mx-5 mt-5">
-                    <PrimaryButton label="Change Password" sufixImage={editIcon} onClick={() => setIsPopupOpen(true) } />
+                    <PrimaryButton label="Update Profile" sufixImage={editIcon} onClick={() => setIsPopupOpen(true) } />
                 </div>
             </div>
             <div className="p-10">
