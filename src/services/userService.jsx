@@ -47,3 +47,11 @@ export const resendOTP = async (email) => {
         throw error;
     }
 }
+
+export const forgotPassword = async (email) => {
+    try {
+        return await api.post('/auth/forgot-password', { email });
+    } catch (error) {
+        throw error;
+    }
+}

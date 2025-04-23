@@ -60,7 +60,7 @@ const Login = () => {
                         </div>
                         <div class="flex w-full items-center justify-evenly pt-3">
                             <PrimaryButton label="Login" width='120px' />
-                            <a class=" text-center text-sm font-medium text-gray-600 hover:underline" href="#">Forgot your password?</a>
+                            <Link to="/auth/forgot-password" class="text-center text-sm font-medium text-gray-600 hover:underline">Forgot your password?</Link>
                         </div>
                         <p class="text-center text-gray-600 pt-5">
                             Don't have an account?

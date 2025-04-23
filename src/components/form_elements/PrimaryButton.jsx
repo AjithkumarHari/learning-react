@@ -7,9 +7,10 @@ const PrimaryButton = ({
 	prefilxImage,
 	sufixImage,
 	width = "fit",
+	height = "fit"
 }) => {
 	return (
-		<button className="primary-button gap-2" style={{ width }} onClick={onClick} disabled={disabled}>
+		<button className="primary-button gap-2" style={{ width, height }} onClick={onClick} disabled={disabled}>
 			{prefilxImage && <img className="h-[15px]" src={prefilxImage} alt="" />}
 			{label}
 			{sufixImage && <img className="h-[15px]" src={sufixImage} alt="" />}
