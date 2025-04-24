@@ -5,13 +5,12 @@ import ProfileUpdatePopup from '../components/ProfileUpdatePopup';
 import PrimaryButton from '../components/form_elements/PrimaryButton';
 
 const Profile = () => {
-
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const user = useStore((state) => state.user);
 
     return (
-        <div>
+        <>
             <div class="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900">
                 <div class="rounded-t-lg h-32 overflow-hidden">
                     <img class="object-cover object-top w-full" src='https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ' alt='Mountain' />
@@ -30,7 +29,7 @@ const Profile = () => {
             <div className="p-10">
                 <ProfileUpdatePopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} userData={user} />
             </div>
-        </div>
+        </>
     );
 };
 

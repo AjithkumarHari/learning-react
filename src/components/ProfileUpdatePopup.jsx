@@ -6,7 +6,7 @@ import { convertToBase64 } from "../utils/convertToBase64 ";
 import closeIcon from "../assets/close-icon.png";
 import InputField from "./form_elements/InputField";
 import PrimaryButton from "./form_elements/PrimaryButton";
-import { useLoader } from "../context/LoaderContext";
+import { useWithLoader } from "../utils/withLoader";
 
 const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
     const [visible, setVisible] = useState(false);
@@ -17,7 +17,7 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
 
     const { setUser } = useStore((state) => state);
 
-    const { showLoader, hideLoader } = useLoader();
+    const withLoader = useWithLoader();
 
     const methods = useForm({
         defaultValues: {
@@ -65,13 +65,11 @@ const ProfileUpdatePopup = ({ isOpen, onClose, userData }) => {
             if (imageFile) {
                 updatedData.profileImage = await convertToBase64(imageFile);
             }
-            showLoader();
-            const response = await userUpdate(userId, updatedData);
-            hideLoader();
+            const response = await withLoader(() => userUpdate(userId, updatedData));
             setUser(response.user);
             onClose();
         } catch (error) { 
-            hideLoader();
+            console.error("Error updating profile:", error);
         }
     };
 

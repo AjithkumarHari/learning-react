@@ -3,21 +3,20 @@ import { FormProvider, useForm } from 'react-hook-form';
 import InputField from './form_elements/InputField';
 import PrimaryButton from './form_elements/PrimaryButton';
 import { forgotPassword } from '../services/userService';
-import { useLoader } from '../context/LoaderContext';
+import { useWithLoader } from '../utils/withLoader';
 
 const EmailForm = () => {
-    const { showLoader, hideLoader } = useLoader();
+    const withLoader = useWithLoader();
 
     const methods = useForm();
+
     const { handleSubmit } = methods;
 
     const onSubmit = async (data) => {
         try {
-            showLoader();
-            await forgotPassword(data.email);
-            hideLoader();
+            const response = await withLoader(() => forgotPassword(data.email));
         } catch (error) {
-            hideLoader();
+            console.error("Error sending email:", error);
         }
     };
 

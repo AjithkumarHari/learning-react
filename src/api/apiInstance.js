@@ -23,12 +23,10 @@ apiBaseUrl.interceptors.request.use(
 
 apiBaseUrl.interceptors.response.use(
     (response) => {
-        console.log('Response from interceptor:', response);
         toast.success(response.data.message);
         return response.data;
     },
     (error) => {
-        console.error('Error from interceptor:', error);
         toast.error(error.response.data.message || 'Something went wrong!');
     }
 );

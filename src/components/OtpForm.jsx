@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { resendOTP, verifyOTP } from '../services/userService';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useLoader } from '../context/LoaderContext';
 import { useStore } from '../store/authStore';
+import { useWithLoader } from '../utils/withLoader';
 
 const OTPInput = () => {
     const inputsRef = useRef([]);
+
     const intervalRef = useRef(null);
 
-    const { showLoader, hideLoader } = useLoader();
+    const withLoader = useWithLoader();
 
     const { setUser, setToken } = useStore((state) => state);
 
@@ -66,16 +67,14 @@ const OTPInput = () => {
 
     const sendOtp = async (otp) => {
         try {
-            showLoader();
-            const response = await verifyOTP(otp, email);
+            const response = await withLoader(() => verifyOTP(otp, email));
             if (response) {
                 setUser(response.user);
                 setToken(response.token);
                 navigate('/home');
             }
-            hideLoader();
         } catch (error) {
-            hideLoader();
+            console.error("Error verifying OTP:", error);
         }
     }
 
@@ -93,13 +92,11 @@ const OTPInput = () => {
 
     const resendOtp = async () => {
         try {
-            showLoader();
-            const response = await resendOTP(email);
+            await withLoader(() => resendOTP(email));
             setOtp(new Array(6).fill(''));
             startTimer();
-            hideLoader();
         } catch (error) {
-            hideLoader();
+            console.error("Error resending OTP:", error);
         }
     }
 

@@ -3,15 +3,15 @@ import { useStore } from '../store/authStore';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { userLogin } from '../services/userService';
-import { useLoader } from '../context/LoaderContext';
 import InputField from './form_elements/InputField';
 import PrimaryButton from './form_elements/PrimaryButton';
+import { useWithLoader } from '../utils/withLoader';
 
 const Login = () => {
-    const { showLoader, hideLoader } = useLoader();
+    const withLoader = useWithLoader();
 
     const methods = useForm();
-
+    
     const { handleSubmit } = methods;
 
     const { setUser, setToken } = useStore((state) => state);
@@ -20,8 +20,7 @@ const Login = () => {
 
     const onSubmit = async data => {
         try {
-            showLoader();
-            const response = await userLogin(data);
+            const response = await withLoader(() => userLogin(data));
             if (response.otpSent) {
                 navigate('/auth/otp', { state: { email: data.email } });
             } else {
@@ -29,9 +28,8 @@ const Login = () => {
                 setToken(response.token);
                 navigate('/home');
             }
-            hideLoader();
         } catch (error) {
-            hideLoader();
+            console.error("Login error:", error);
         }
     }
 

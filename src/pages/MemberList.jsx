@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { getUsers } from '../services/userService';
-import { useLoader } from '../context/LoaderContext';
-import { toast } from 'react-toastify';
+import { useWithLoader } from '../utils/withLoader';
 
 const MemberList = () => {
+    const withLoader = useWithLoader();
 
     const [members, setMembers] = useState([]);
-    const { showLoader, hideLoader } = useLoader();
 
     const getAllUsersData = async () => {
         try {
-            showLoader();
-            const users = await getUsers();
-            hideLoader();
+            const users = await withLoader(() => getUsers());
             setMembers(users);
         } catch (error) {
-            hideLoader();
-            toast.error(error?.response?.data?.message);
+            console.error("Error fetching users:", error);
         }
     }
 
     useEffect(() => {
-        getAllUsersData();
+        getAllUsersData()
     }, []);
 
     return (

@@ -4,35 +4,37 @@ import InputField from './form_elements/InputField';
 import PrimaryButton from './form_elements/PrimaryButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userUpdate, verifyOTP } from '../services/userService';
-import { useLoader } from '../context/LoaderContext';
 import { useStore } from '../store/authStore';
+import { useWithLoader } from '../utils/withLoader';
 
 const ChangePassword = () => {
-    const { showLoader, hideLoader } = useLoader();
+    const withLoader = useWithLoader();
 
     const [notMatch, setNotMatch] = useState(false);
+
     const [userDetails, setUserDetails] = useState(null);
 
     const { setUser, setToken } = useStore((state) => state);
 
     const methods = useForm();
+
     const { handleSubmit } = methods;
 
     const navigate = useNavigate();
 
     const location = useLocation();
+
     const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
-    const email = queryParams.get('email');
+
+    const { token, email } = Object.fromEntries(queryParams.entries());
 
     useEffect(() => {
-        verifyToken(token);
+        verifyToken(token)
     }, [])
 
     const verifyToken = async () => {
         try {
-            showLoader();
-            const response = await verifyOTP(token, email);
+            const response = await withLoader(() => verifyOTP(token, email));
             if (response) {
                 setUser(response.user);
                 setToken(response.token);
@@ -40,9 +42,8 @@ const ChangePassword = () => {
             } else {
                 navigate('/*');
             }
-            hideLoader();
         } catch (error) {
-            hideLoader();
+            console.error("Error verifying token:", error);
             navigate('/*');
         }
     }
@@ -53,15 +54,13 @@ const ChangePassword = () => {
                 setNotMatch(true);
                 return;
             }
-            showLoader();
-            const response = await userUpdate(userDetails.id, { password: data.newPassword });
+            const response = await withLoader(() => userUpdate(userDetails.id, { password: data.newPassword }));
             if (response) {
                 setUser(response.user);
                 navigate('/home');
             }
-            hideLoader();
         } catch (error) {
-            hideLoader();
+            console.error("Error updating password:", error);
         }
     }
 

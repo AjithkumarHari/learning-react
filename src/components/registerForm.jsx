@@ -2,12 +2,12 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { userRegister } from '../services/userService';
-import { useLoader } from '../context/LoaderContext';
 import InputField from './form_elements/InputField';
 import PrimaryButton from './form_elements/PrimaryButton';
+import { useWithLoader } from '../utils/withLoader';
 
 const Register = () => {
-    const { showLoader, hideLoader } = useLoader();
+    const withLoader = useWithLoader();
 
     const methods = useForm();
 
@@ -17,12 +17,10 @@ const Register = () => {
 
     const onSubmit = async data => {
         try {
-            showLoader();
-            const response = await userRegister(data);
+            const response = await withLoader(() => userRegister(data));
             if (response) navigate('/auth/otp', { state: { email: data.email } });
-            hideLoader();
         } catch (error) {
-            hideLoader();
+            console.error("Registration error:", error);
         }
     }
 
